@@ -1,0 +1,495 @@
+{
+	"info": {
+		"_postman_id": "42ce448a-5ff7-4aed-9ed6-0dc2b9552841",
+		"name": "API Ekstrakurikuler",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46208503",
+		"_collection_link": "https://zhaaboy-7292075.postman.co/workspace/ZhaaBoy's-Workspace~59fdc57b-facb-4d26-8980-e2ec14bc5a19/collection/46208503-42ce448a-5ff7-4aed-9ed6-0dc2b9552841?action=share&source=collection_link&creator=46208503"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Budi Siswa\",\n  \"email\": \"budi@example.com\",\n  \"password\": \"password\",\n  \"role\": \"siswa\",\n  \"nisn\": \"1234567890\",\n  \"kelas\": \"XII IPA 1\",\n  \"no_telp\": \"081234567890\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/register",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"budi@example.com\",\n  \"password\": \"password\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/login",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Eskul",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/eskul",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"eskul"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Siswa Daftar Eskul",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/eskul/2/siswa",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"eskul",
+						"2",
+						"siswa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Eskul",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nama\": \"Pramuka\",\n  \"jadwal\": \"Senin, 15:00 WIB\",\n  \"pembina_id\": 3,\n  \"tempat\": \"Lapangan Utama\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/eskul",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"eskul"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Eskul",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"admin_id\": 1,\r\n  \"nama\": \"Pramuka\",\r\n  \"jadwal\": \"Jumat 15.00\",\r\n  \"pembina_id\": 3,\r\n  \"tempat\": \"Lapangan\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/eskul/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"eskul",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Eskul",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/eskul/1/delete?admin_id=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"eskul",
+						"1",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "admin_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Daftar Eskul (Siswa)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"siswa_id\": 6,\n  \"eskul_id\": 1\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/eskul/daftar",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"eskul",
+						"daftar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Absen Eskul",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"eskul_id\": 1,\n  \"siswa_id\": 6,\n  \"tanggal\": \"2025-06-26\",\n  \"status\": \"hadir\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/absen",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"absen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lihat Absensi Siswa",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/api/absen/6",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"absen",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Absensi",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"pembina_id\": 3,\r\n  \"tanggal\": \"2025-06-27\",\r\n  \"status\": \"izin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/absen/2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"absen",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Absensi",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"pembina_id\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/absen/2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"absen",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Input Nilai Eskul",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"pembina_id\": 3,\n  \"siswa_id\": 7,\n  \"eskul_id\": 1,\n  \"tahun_ajaran\": \"2024/2025\",\n  \"nilai\": \"A\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/nilai",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"nilai"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Nilai Eskul",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"pembina_id\": 3,\r\n  \"tahun_ajaran\": \"2025/2026\",\r\n  \"nilai\": \"B+\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/nilai/1",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"nilai",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Nilai",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"pembina_id\": 3,\r\n  \"tahun_ajaran\": \"2025/2026\",\r\n  \"nilai\": \"B+\"\r\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:8000/api/nilai/7",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"nilai",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Nilai",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"pembina_id\": 2\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/nilai/2/delete?pembina_id=2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"nilai",
+						"2",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "pembina_id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
