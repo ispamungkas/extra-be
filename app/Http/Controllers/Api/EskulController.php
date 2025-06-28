@@ -11,14 +11,12 @@ use Illuminate\Support\Str;
 
 class EskulController extends Controller
 {
-    // Ambil semua eskul
     public function index()
     {
-        $eskuls = Eskul::with('pembina')->get();
+        $eskuls = Eskul::with(['pembina', 'siswa'])->get();
         return response()->json($eskuls);
     }
 
-    // Buat eskul (oleh admin)
     public function store(Request $request)
     {
         $request->validate([
