@@ -12,6 +12,7 @@ Route::get('/ping', function () {
 // Auth
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/alluser', [AuthController::class, 'alluser']);
 // Eskul
 Route::get('/eskul', [EskulController::class, 'index']);
 Route::get('/eskul/{id}/siswa', [EskulController::class, 'siswaEskul']);

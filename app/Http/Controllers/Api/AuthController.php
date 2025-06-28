@@ -41,4 +41,10 @@ class AuthController extends Controller
 
         return response()->json($user);
     }
+
+    public function alluser(Request $request)
+    {
+        $alluser = User::with(['eskuls', 'absensi','nilai'])->get();
+        return response()->json($alluser);
+    }
 }
