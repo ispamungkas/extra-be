@@ -10,7 +10,8 @@ class Eskul extends Model
         'nama',
         'jadwal',
         'pembina_id',
-        'tempat'
+        'tempat',
+        'img',
     ];
 
     public function siswa()

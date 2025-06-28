@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Eskul;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class EskulController extends Controller
 {
@@ -24,7 +26,8 @@ class EskulController extends Controller
             'jadwal' => 'required',
             'pembina_id' => 'required|exists:users,id',
             'tempat' => 'required',
-            'admin_id' => 'required|exists:users,id'
+            'admin_id' => 'required|exists:users,id',
+            'img' => 'mimes:jpg,png'
         ]);
 
         $admin = User::find($request->admin_id);
@@ -32,7 +35,27 @@ class EskulController extends Controller
             return response()->json(['message' => 'Hanya admin yang dapat membuat eskul'], 403);
         }
 
-        $eskul = Eskul::create($request->only(['nama', 'jadwal', 'pembina_id', 'tempat']));
+        $dir_img = 'images/eskul';
+        $folder_img = public_path($dir_img);
+
+        if (!File::exists($folder_img)) {
+            File::makeDirectory($folder_img, 0755, true);
+        }
+
+        $file_name_img = Str::uuid() . '.png';
+
+        if ($request->hasFile('img')) {
+            $request->file('img')->move($folder_img, $file_name_img);
+        }
+
+        $img_path = $dir_img . '/' . $file_name_img;
+        $eskul = Eskul::create([
+            'nama' => $request->nama,
+            'jadwal' => $request->jadwal,
+            'pembina_id' => $request->pembina_id,
+            'tempat' => $request->tempat,
+            'img' => $img_path 
+        ]);
 
         return response()->json($eskul, 201);
     }
@@ -92,25 +115,46 @@ public function siswaEskul($eskul_id)
             'jadwal' => 'required',
             'pembina_id' => 'required|exists:users,id',
             'tempat' => 'required',
+            'img' => 'mimes:jpg,png'
         ]);
 
         $admin = User::find($request->admin_id);
+        $eskul = Eskul::findOrFail($id);
+
         if (!$admin || $admin->role !== 'admin') {
             return response()->json(['message' => 'Hanya admin yang dapat mengedit eskul'], 403);
         }
 
-        $eskul = Eskul::findOrFail($id);
+        if ($request->hasFile('img')) {
+            $dir_img = 'images/eskul';
+            $folder_img = public_path($dir_img);
+
+            if (!File::exists($folder_img)) {
+                File::makeDirectory($folder_img, 0755, true);
+            }
+
+            if ($eskul->img && File::exists(public_path($eskul->img))) {
+                File::delete(public_path($eskul->img));
+            }
+
+            $file_name_img = Str::uuid() . '.png';
+
+            $request->file('img')->move($folder_img, $file_name_img);
+
+            $eskul->img = $dir_img . '/' . $file_name_img;
+        }
+
         $eskul->update([
             'nama' => $request->nama,
             'jadwal' => $request->jadwal,
             'pembina_id' => $request->pembina_id,
-            'tempat' => $request->tempat
+            'tempat' => $request->tempat,
+            'img' => $eskul->img
         ]);
 
         return response()->json(['message' => 'Eskul berhasil diupdate', 'data' => $eskul]);
     }
 
-    // Hapus eskul (oleh admin)
     public function destroy(Request $request, $id)
     {
         $admin_id = $request->query('admin_id');

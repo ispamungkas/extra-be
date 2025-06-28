@@ -15,6 +15,7 @@ class AuthController extends Controller
             'name' => 'required',
             'role' => 'required|in:siswa,pembina',
             'email' => 'required|email|unique:users',
+            'nisn' => 'required',
             'password' => 'required|min:6',
         ]);
 
