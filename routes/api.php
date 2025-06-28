@@ -13,11 +13,13 @@ Route::get('/ping', function () {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/alluser', [AuthController::class, 'alluser']);
+Route::put('/user/{id}/update', [AuthController::class, 'updateProfile']);
 // Eskul
 Route::get('/eskul', [EskulController::class, 'index']);
 Route::get('/eskul/{id}/siswa', [EskulController::class, 'siswaEskul']);
 Route::post('/eskul', [EskulController::class, 'store']);
 Route::post('/eskul/daftar', [EskulController::class, 'daftarEskul']);
+Route::post('/eskul/keluar', [EskulController::class, 'keluarEskul']);
 Route::put('/eskul/{id}', [EskulController::class, 'update']);
 Route::delete('/eskul/{id}/delete', [EskulController::class, 'destroy']);
 // Absensi

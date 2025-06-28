@@ -72,6 +72,27 @@ class EskulController extends Controller
         return response()->json(['message' => 'Berhasil daftar eskul.']);
     }
 
+    public function keluarEskul(Request $request)
+        {
+            $request->validate([
+                'siswa_id' => 'required|exists:users,id',
+                'eskul_id' => 'required|exists:eskuls,id',
+            ]);
+
+            $eskul = Eskul::findOrFail($request->eskul_id);
+            
+            // Cek apakah siswa memang terdaftar
+            if (!$eskul->siswa->contains($request->siswa_id)) {
+                return response()->json(['message' => 'Siswa tidak terdaftar pada eskul ini'], 404);
+            }
+
+            // Hapus relasi siswa dari eskul
+            $eskul->siswa()->detach($request->siswa_id);
+
+            return response()->json(['message' => 'Siswa berhasil keluar dari eskul']);
+        }
+
+
     // Liat siswa ayng mendaftar eskul
 public function siswaEskul($eskul_id)
 {
