@@ -14,7 +14,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'role' => 'required|in:siswa,pembina',
+            'role' => 'required|in:siswa,pembina,admin',
             'email' => 'required|email|unique:users',
             'nisn' => 'required',
             'password' => 'required|min:6',
