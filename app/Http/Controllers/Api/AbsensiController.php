@@ -73,7 +73,7 @@ class AbsensiController extends Controller
         'status' => $request->status
     ]);
 
-    return response()->json(['message' => 'Absensi berhasil diupdate', 'data' => $absensi]);
+    return response()->json($absensi    );
 }
 
     // Hapus absensi (oleh pembina)
