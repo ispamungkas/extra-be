@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\EskulController;
 use App\Http\Controllers\Api\AbsensiController;
 use App\Http\Controllers\Api\NilaiController;
+use App\Models\Absensi;
 
 Route::get('/ping', function () {
     return response()->json(['message' => 'pong']);
@@ -22,6 +23,8 @@ Route::post('/eskul/daftar', [EskulController::class, 'daftarEskul']);
 Route::post('/eskul/keluar', [EskulController::class, 'keluarEskul']);
 Route::put('/eskul/{id}', [EskulController::class, 'update']);
 Route::delete('/eskul/{id}/delete', [EskulController::class, 'destroy']);
+Route::get('/pembina/{pembina_id}/absensi', [AbsensiController::class, 'getAbsensiByPembina']);
+Route::get('/pembina/{pembina_id}/nilai', [NilaiController::class, 'getNilaiByPembina']);
 // Absensi
 Route::post('/absen', [AbsensiController::class, 'store']);
 Route::get('/absen/{siswa_id}', [AbsensiController::class, 'show']);
