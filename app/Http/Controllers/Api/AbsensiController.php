@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Absensi;
-use App\Models\User;
 use App\Models\Eskul;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
@@ -17,7 +17,7 @@ class AbsensiController extends Controller
         'pembina_id' => 'required|exists:users,id',
         'eskul_id' => 'required|exists:eskuls,id',
         'siswa_id' => 'required|exists:users,id',
-        'tanggal' => 'required|date',
+        'tanggal' => 'required',
         'status' => 'required|in:hadir,alfa,izin,sakit',
     ]);
 
@@ -100,9 +100,7 @@ class AbsensiController extends Controller
 
     return response()->json(['message' => 'Absensi berhasil dihapus']);
 }
-
-    // Get semua absensi berdasarkan pembina
-    public function getAbsensiByPembina($pembina_id)
+     public function getAbsensiByPembina($pembina_id)
         {
             $pembina = User::find($pembina_id);
 
@@ -122,7 +120,7 @@ class AbsensiController extends Controller
                 ->get();
 
             if ($absensi->isEmpty()) {
-                return response()->json(['message' => 'Data absensi tidak ditemukan'], 404);
+                return response()->json([], 200);
             }
 
             return response()->json($absensi);

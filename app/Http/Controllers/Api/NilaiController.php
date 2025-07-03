@@ -43,10 +43,7 @@ class NilaiController extends Controller
                 'nilai' => $request->nilai,
             ]);
 
-            return response()->json([
-                'message' => 'Nilai berhasil ditambahkan',
-                'data' => $nilai
-            ]);
+            return response()->json($nilai);
         }
 
     // Lihat semua nilai untuk siswa tertentu
