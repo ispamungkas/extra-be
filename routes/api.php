@@ -14,6 +14,7 @@ Route::get('/ping', function () {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/alluser', [AuthController::class, 'alluser']);
+Route::get('/user/{id}', [AuthController::class, 'getUserById']);
 Route::put('/user/{id}/update', [AuthController::class, 'updateProfile']);
 // Eskul
 Route::get('/eskul', [EskulController::class, 'index']);

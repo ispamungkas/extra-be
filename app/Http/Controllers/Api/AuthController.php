@@ -43,6 +43,14 @@ class AuthController extends Controller
         return response()->json($user);
     }
 
+    public function getUserById(Request $request, $id)
+    {
+        $user = User::with(['eskuls', 'absensi','nilai'])->where("id", $id)->first();
+        
+        return response()->json($user);
+    }
+
+
     public function alluser(Request $request)
     {
         $alluser = User::with(['eskuls', 'absensi','nilai'])->get();
@@ -85,10 +93,7 @@ class AuthController extends Controller
 
             $user->save();
 
-            return response()->json([
-                'message' => 'Profil berhasil diperbarui',
-                'data' => $user
-            ]);
+            return response()->json($user);
 
         } catch (ValidationException $e) {
             return response()->json([
