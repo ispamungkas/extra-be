@@ -50,56 +50,56 @@ class AbsensiController extends Controller
 
     // Edit absensi (oleh pembina)
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'pembina_id' => 'required|exists:users,id',
-        'status' => 'required|in:hadir,alfa,izin,sakit',
-        'tanggal' => 'required|date'
-    ]);
+    {
+        $request->validate([
+            'pembina_id' => 'required|exists:users,id',
+            'status' => 'required|in:hadir,alfa,izin,sakit',
+            'tanggal' => 'required|date'
+        ]);
 
-    $pembina = User::find($request->pembina_id);
-    if (!$pembina || $pembina->role !== 'pembina') {
-        return response()->json(['message' => 'Hanya pembina yang dapat mengedit absensi'], 403);
+        $pembina = User::find($request->pembina_id);
+        if (!$pembina || $pembina->role !== 'pembina') {
+            return response()->json(['message' => 'Hanya pembina yang dapat mengedit absensi'], 403);
+        }
+
+        $absensi = Absensi::findOrFail($id);
+        $eskul = \App\Models\Eskul::find($absensi->eskul_id);
+
+        if ($eskul->pembina_id !== $pembina->id) {
+            return response()->json(['message' => 'Anda bukan pembina dari eskul ini'], 403);
+        }
+
+        $absensi->update([
+            'tanggal' => $request->tanggal,
+            'status' => $request->status
+        ]);
+
+        return response()->json($absensi    );
     }
-
-    $absensi = Absensi::findOrFail($id);
-    $eskul = \App\Models\Eskul::find($absensi->eskul_id);
-
-    if ($eskul->pembina_id !== $pembina->id) {
-        return response()->json(['message' => 'Anda bukan pembina dari eskul ini'], 403);
-    }
-
-    $absensi->update([
-        'tanggal' => $request->tanggal,
-        'status' => $request->status
-    ]);
-
-    return response()->json($absensi    );
-}
 
     // Hapus absensi (oleh pembina)
     public function destroy(Request $request, $id)
-{
-    $request->validate([
-        'pembina_id' => 'required|exists:users,id'
-    ]);
+    {
+        $request->validate([
+            'pembina_id' => 'required|exists:users,id'
+        ]);
 
-    $pembina = User::find($request->pembina_id);
-    if (!$pembina || $pembina->role !== 'pembina') {
-        return response()->json(['message' => 'Hanya pembina yang dapat menghapus absensi'], 403);
+        $pembina = User::find($request->pembina_id);
+        if (!$pembina || $pembina->role !== 'pembina') {
+            return response()->json(['message' => 'Hanya pembina yang dapat menghapus absensi'], 403);
+        }
+
+        $absensi = Absensi::findOrFail($id);
+        $eskul = \App\Models\Eskul::find($absensi->eskul_id);
+
+        if ($eskul->pembina_id !== $pembina->id) {
+            return response()->json(['message' => 'Anda bukan pembina dari eskul ini'], 403);
+        }
+
+        $absensi->delete();
+
+        return response()->json(['message' => 'Absensi berhasil dihapus']);
     }
-
-    $absensi = Absensi::findOrFail($id);
-    $eskul = \App\Models\Eskul::find($absensi->eskul_id);
-
-    if ($eskul->pembina_id !== $pembina->id) {
-        return response()->json(['message' => 'Anda bukan pembina dari eskul ini'], 403);
-    }
-
-    $absensi->delete();
-
-    return response()->json(['message' => 'Absensi berhasil dihapus']);
-}
      public function getAbsensiByPembina($pembina_id)
         {
             $pembina = User::find($pembina_id);
@@ -125,4 +125,5 @@ class AbsensiController extends Controller
 
             return response()->json($absensi);
         }
+    
 }

@@ -53,7 +53,7 @@ class AuthController extends Controller
 
     public function alluser(Request $request)
     {
-        $alluser = User::with(['eskuls', 'absensi','nilai'])->get();
+        $alluser = User::with(['eskuls', 'absensi','nilai', 'eskulDibina'])->get();
         return response()->json($alluser);
     }
 
@@ -105,6 +105,31 @@ class AuthController extends Controller
                 'message' => 'Gagal memperbarui profil',
                 'error' => $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function change_password(Request $request, $id)
+    {
+        try {
+            $validated = $request->validate([
+                'password' => 'required',
+            ]);
+
+            $user = User::find($id);
+
+            if (! $user) {
+                return response()->json([
+                    'message' => 'User not found'
+                ], 404);
+            }
+
+            $user->password = bcrypt($validated['password']);
+            $user->save();
+
+            return response()->json($user);
+
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
         }
     }
 }
