@@ -16,6 +16,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/alluser', [AuthController::class, 'alluser']);
 Route::get('/user/{id}', [AuthController::class, 'getUserById']);
 Route::put('/user/{id}/update', [AuthController::class, 'updateProfile']);
+Route::put('/user/{id}/changepassword', [AuthController::class, 'change_password']);
 // Eskul
 Route::get('/eskul', [EskulController::class, 'index']);
 Route::get('/eskul/{id}/siswa', [EskulController::class, 'siswaEskul']);
