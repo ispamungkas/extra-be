@@ -36,7 +36,7 @@ class User extends Authenticatable
     // Jika dia pembina: membina banyak eskul
     public function eskulDibina()
     {
-        return $this->hasMany(Eskul::class, 'pembina_id');
+        return $this->hasOne(Eskul::class, 'pembina_id');
     }
 
     // Absensi siswa

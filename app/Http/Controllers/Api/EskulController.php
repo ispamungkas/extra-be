@@ -19,43 +19,47 @@ class EskulController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama' => 'required',
-            'jadwal' => 'required',
+        $validated = $request->validate([
+            'admin_id'   => 'required|exists:users,id',
+            'nama'       => 'required|string|max:255',
+            'jadwal'     => 'required|string|max:255',
             'pembina_id' => 'required|exists:users,id',
-            'tempat' => 'required',
-            'admin_id' => 'required|exists:users,id',
-            'img' => 'mimes:jpg,png'
+            'tempat'     => 'required|string|max:255',
+            'img'        => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $admin = User::find($request->admin_id);
+        $admin = User::find($validated['admin_id']);
         if (!$admin || $admin->role !== 'admin') {
             return response()->json(['message' => 'Hanya admin yang dapat membuat eskul'], 403);
         }
 
-        $dir_img = 'images/eskul';
-        $folder_img = public_path($dir_img);
-
-        if (!File::exists($folder_img)) {
-            File::makeDirectory($folder_img, 0755, true);
-        }
-
-        $file_name_img = Str::uuid() . '.png';
+        $img_path = null;
 
         if ($request->hasFile('img')) {
-            $request->file('img')->move($folder_img, $file_name_img);
+            $dir_img = 'images/eskul';
+            $folder_img = public_path($dir_img);
+
+            if (!File::exists($folder_img)) {
+                File::makeDirectory($folder_img, 0755, true);
+            }
+
+            $file_name = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
+            $request->file('img')->move($folder_img, $file_name);
+            $img_path = $dir_img . '/' . $file_name;
         }
 
-        $img_path = $dir_img . '/' . $file_name_img;
         $eskul = Eskul::create([
-            'nama' => $request->nama,
-            'jadwal' => $request->jadwal,
-            'pembina_id' => $request->pembina_id,
-            'tempat' => $request->tempat,
-            'img' => $img_path 
+            'nama'       => $validated['nama'],
+            'jadwal'     => $validated['jadwal'],
+            'pembina_id' => $validated['pembina_id'],
+            'tempat'     => $validated['tempat'],
+            'img'        => $img_path,
         ]);
 
-        return response()->json($eskul, 201);
+        return response()->json([
+            'message' => 'Eskul berhasil dibuat',
+            'data'    => $eskul
+        ], 201);
     }
 
     // Siswa mendaftar ke eskul
@@ -128,22 +132,23 @@ public function siswaEskul($eskul_id)
     // Edit eskul (oleh admin)
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'admin_id' => 'required|exists:users,id',
-            'nama' => 'required',
-            'jadwal' => 'required',
+        $validated = $request->validate([
+            'admin_id'   => 'required|exists:users,id',
+            'nama'       => 'required|string|max:255',
+            'jadwal'     => 'required|string|max:255',
             'pembina_id' => 'required|exists:users,id',
-            'tempat' => 'required',
-            'img' => 'mimes:jpg,png'
+            'tempat'     => 'required|string|max:255',
+            'img'        => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $admin = User::find($request->admin_id);
+        $admin = User::find($validated['admin_id']);
         $eskul = Eskul::findOrFail($id);
 
         if (!$admin || $admin->role !== 'admin') {
             return response()->json(['message' => 'Hanya admin yang dapat mengedit eskul'], 403);
         }
 
+        // Jika ada file baru
         if ($request->hasFile('img')) {
             $dir_img = 'images/eskul';
             $folder_img = public_path($dir_img);
@@ -152,26 +157,27 @@ public function siswaEskul($eskul_id)
                 File::makeDirectory($folder_img, 0755, true);
             }
 
+            // Hapus file lama
             if ($eskul->img && File::exists(public_path($eskul->img))) {
                 File::delete(public_path($eskul->img));
             }
 
-            $file_name_img = Str::uuid() . '.png';
-
-            $request->file('img')->move($folder_img, $file_name_img);
-
-            $eskul->img = $dir_img . '/' . $file_name_img;
+            $file_name = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
+            $request->file('img')->move($folder_img, $file_name);
+            $eskul->img = $dir_img . '/' . $file_name;
         }
 
-        $eskul->update([
-            'nama' => $request->nama,
-            'jadwal' => $request->jadwal,
-            'pembina_id' => $request->pembina_id,
-            'tempat' => $request->tempat,
-            'img' => $eskul->img
-        ]);
+        // Update nilai lainnya
+        $eskul->nama       = $validated['nama'];
+        $eskul->jadwal     = $validated['jadwal'];
+        $eskul->pembina_id = $validated['pembina_id'];
+        $eskul->tempat     = $validated['tempat'];
+        $eskul->save();
 
-        return response()->json(['message' => 'Eskul berhasil diupdate', 'data' => $eskul]);
+        return response()->json([
+            'message' => 'Eskul berhasil diperbarui',
+            'data'    => $eskul
+        ]);
     }
 
     public function destroy(Request $request, $id)
